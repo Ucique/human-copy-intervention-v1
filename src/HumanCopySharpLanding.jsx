@@ -191,6 +191,65 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
                   </p>
                 </div>
               </div>
+            </aside>
+
+            <div className="max-w-3xl space-y-9 text-lg leading-relaxed text-zinc-100 lg:col-start-1">
+              <p className="text-zinc-50">
+                Man riecht es.
+                <br />
+                Wie Parfum über kaltem Schweiß.
+              </p>
+
+              <p className="text-zinc-100">
+                Wenn du das unangenehm findest:
+                <br />
+                Glückwunsch. Dein Gewissen lebt noch.
+              </p>
+
+              <p>
+                Du bist sichtbar.
+                <br />
+                Du wirst zitiert.
+                <br />
+                Und deine Texte klingen, als hätten sie einen Pressesprecher –
+                aber keinen Puls.
+              </p>
+
+              <p>
+                Dein Image läuft geschniegelt über die Bühne.
+                <br />
+                Deine Haltung raucht draußen hinter dem Theater.
+              </p>
+
+              <p>
+                KI war nicht der Fehler.
+                <br />
+                Sie war nur der perfekte Alibi-Zeuge.
+                <br />
+                Sauber. Höflich. Immer bereit zu sagen: „Ich war’s.“
+              </p>
+
+              <p>
+                Texte ohne Risiko sind wie Bio-Fleisch aus dem Labor:
+                <br />
+                ethisch verpackt,
+                <br />
+                geschmacklich tot.
+              </p>
+
+              <p>
+                Oberflächlichkeit ist kein Stil mehr.
+                <br />
+                Sie ist ein Geruch.
+              </p>
+
+              <p>
+                Und Unechtheit hat keine Zukunft –
+                <br />
+                sie recycelt sich nur selbst,
+                <br />
+                bis niemand mehr hinschaut.
+              </p>
             </div>
           </section>
 
@@ -301,6 +360,39 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
           </section>
         </div>
 
+        <section id="impressum" className="mt-20">
+          <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 text-sm text-zinc-100 backdrop-blur sm:px-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Impressum
+            </h2>
+
+            <div className="mt-6 space-y-6 leading-relaxed text-zinc-200">
+              {impressumBlocks.map((block) => (
+                <p key={block} className="whitespace-pre-line">
+                  {block}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="datenschutz" className="mt-20">
+          <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 text-sm text-zinc-100 backdrop-blur sm:px-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Datenschutz
+            </h2>
+
+            <div className="mt-6 space-y-6 leading-relaxed text-zinc-200">
+              {datenschutzBlocks.map((block) => (
+                <p key={block} className="whitespace-pre-line">
+                  {block}
+                </p>
+              ))}
+              <p className="whitespace-pre-line">Stand: 09. Januar 2026</p>
+            </div>
+          </div>
+        </section>
+
         {/* FOOTER (wie jetzt) */}
         <footer className="mt-16 pb-10">
           <div className="flex flex-col gap-4 text-center text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:text-left">
@@ -332,6 +424,85 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
           </div>
         </footer>
       </main>
+
+      {!hasConsent && (
+        <div className="fixed inset-x-4 bottom-6 z-50 rounded-[24px] border border-zinc-200/10 bg-zinc-900/95 p-6 text-sm text-zinc-200 shadow-xl backdrop-blur sm:inset-x-auto sm:right-6 sm:max-w-md">
+          <p className="text-zinc-100">
+            Wir verwenden Cookies für Statistikzwecke nur mit deiner
+            Einwilligung.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => updateConsent({ analytics: true })}
+              className="rounded-full bg-zinc-50 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-white"
+            >
+              Alle akzeptieren
+            </button>
+            <button
+              type="button"
+              onClick={() => updateConsent({ analytics: false })}
+              className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+            >
+              Nur notwendige
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+            >
+              Einstellungen
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isSettingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+          <div
+            className="absolute inset-0 bg-black/70"
+            onClick={() => setIsSettingsOpen(false)}
+          />
+          <div className="relative w-full max-w-lg rounded-[28px] border border-zinc-200/10 bg-zinc-900/95 p-6 text-sm text-zinc-200 backdrop-blur">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Cookie-Einstellungen
+            </h3>
+            <p className="mt-4 text-zinc-100">
+              Entscheide, ob wir Analytics-Cookies setzen dürfen.
+            </p>
+
+            <label className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3">
+              <span className="text-sm text-zinc-100">Analytics</span>
+              <input
+                type="checkbox"
+                checked={analyticsEnabled}
+                onChange={(event) => setAnalyticsEnabled(event.target.checked)}
+                className="h-4 w-4 accent-zinc-50"
+              />
+            </label>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  updateConsent({ analytics: analyticsEnabled });
+                  setIsSettingsOpen(false);
+                }}
+                className="rounded-full bg-zinc-50 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-white"
+              >
+                Speichern
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(false)}
+                className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+              >
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
