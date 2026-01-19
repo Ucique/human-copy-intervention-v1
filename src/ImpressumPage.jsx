@@ -1,7 +1,7 @@
 import React from "react";
 import logoMarkUrl from "../assets/img/logo-mark.png";
 
-const impressumBlocks = [
+export const impressumBlocks = [
   "Anbieter / Anschrift\n" +
     "Human Copy\n" +
     "Charlotte Grude\n" +
@@ -50,10 +50,10 @@ export default function ImpressumPage({ onOpenSettings }) {
             </span>
           </div>
           <a
-            href="#top"
+            href="../"
             className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200 hover:text-zinc-50"
           >
-            Zurück
+            Zurück zur Startseite
           </a>
         </nav>
 
@@ -76,12 +76,8 @@ export default function ImpressumPage({ onOpenSettings }) {
           <div className="flex flex-col gap-4 text-center text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <div className="flex flex-col items-center gap-3 text-zinc-300 sm:items-start">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                <a href="#impressum" className="hover:text-zinc-50">
-                  Impressum
-                </a>
-                <span aria-hidden="true">·</span>
-                <a href="#datenschutz" className="hover:text-zinc-50">
-                  Datenschutz
+                <a href="../" className="hover:text-zinc-50">
+                  Zurück zur Startseite
                 </a>
               </div>
               <button
