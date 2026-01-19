@@ -5,6 +5,10 @@ Experimental landing page for testing alternative copy, structure, and emotional
 ⚠️ NOT production  
 ⚠️ Live site remains in `human-copy-com`
 
+Static site.  
+No build step.  
+Deployed with GitHub Pages.
+
 Purpose:
 - A/B testing
 - Copy interventions
