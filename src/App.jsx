@@ -4,18 +4,11 @@ import HumanCopySharpLanding from "./HumanCopySharpLanding.jsx";
 import ImpressumPage from "./ImpressumPage.jsx";
 
 export default function App() {
-  const [hash, setHash] = useState(window.location.hash);
   const [consent, setConsent] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
 
   const hasConsent = useMemo(() => consent !== null, [consent]);
-
-  useEffect(() => {
-    const handleHashChange = () => setHash(window.location.hash);
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("hc_consent");
@@ -63,14 +56,19 @@ export default function App() {
     localStorage.setItem("hc_consent", JSON.stringify(nextConsent));
   };
 
-  const page =
-    hash === "#impressum" ? (
-      <ImpressumPage onOpenSettings={() => setIsSettingsOpen(true)} />
-    ) : hash === "#datenschutz" ? (
-      <DatenschutzPage onOpenSettings={() => setIsSettingsOpen(true)} />
-    ) : (
-      <HumanCopySharpLanding onOpenSettings={() => setIsSettingsOpen(true)} />
-    );
+  const normalizedPath = window.location.pathname.endsWith("/")
+    ? window.location.pathname
+    : `${window.location.pathname}/`;
+  const isImpressum = normalizedPath.endsWith("/impressum/");
+  const isDatenschutz = normalizedPath.endsWith("/datenschutz/");
+
+  const page = isImpressum ? (
+    <ImpressumPage onOpenSettings={() => setIsSettingsOpen(true)} />
+  ) : isDatenschutz ? (
+    <DatenschutzPage onOpenSettings={() => setIsSettingsOpen(true)} />
+  ) : (
+    <HumanCopySharpLanding onOpenSettings={() => setIsSettingsOpen(true)} />
+  );
 
   return (
     <>

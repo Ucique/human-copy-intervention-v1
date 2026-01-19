@@ -1,7 +1,7 @@
 import React from "react";
 import logoMarkUrl from "../assets/img/logo-mark.png";
 
-const datenschutzBlocks = [
+export const datenschutzBlocks = [
   "Verantwortliche Stelle\n" + "Verantwortliche: human-copy",
   "Hosting über GitHub Pages\n" +
     "Diese Website wird über GitHub Pages (GitHub, Inc.) bereitgestellt. Beim Aufruf werden durch GitHub serverseitige Logfiles (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, User-Agent) verarbeitet, um die Website bereitzustellen und zu sichern.",
@@ -47,10 +47,10 @@ export default function DatenschutzPage({ onOpenSettings }) {
             </span>
           </div>
           <a
-            href="#top"
+            href="../"
             className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200 hover:text-zinc-50"
           >
-            Zurück
+            Zurück zur Startseite
           </a>
         </nav>
 
@@ -74,12 +74,8 @@ export default function DatenschutzPage({ onOpenSettings }) {
           <div className="flex flex-col gap-4 text-center text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <div className="flex flex-col items-center gap-3 text-zinc-300 sm:items-start">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                <a href="#impressum" className="hover:text-zinc-50">
-                  Impressum
-                </a>
-                <span aria-hidden="true">·</span>
-                <a href="#datenschutz" className="hover:text-zinc-50">
-                  Datenschutz
+                <a href="../" className="hover:text-zinc-50">
+                  Zurück zur Startseite
                 </a>
               </div>
               <button
