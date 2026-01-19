@@ -50,7 +50,7 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
             <img
               src={logoMarkUrl}
               alt="Human Copy Logo"
-              className="h-5 w-auto opacity-90"
+              className="h-[clamp(26px,2.2vw,40px)] w-auto opacity-90"
             />
             <span className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200">
               human-copy
@@ -101,7 +101,7 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
         </header>
 
         <div className="mt-16 flex flex-col gap-16">
-          <section className="grid gap-10 lg:grid-cols-[1fr_320px]">
+          <section className="grid gap-10 lg:grid-cols-[1fr_380px]">
             <div className="max-w-3xl space-y-6 text-lg leading-relaxed text-zinc-100">
               <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
                 Warum KI-Texte scheitern
@@ -113,11 +113,11 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
 
             <aside className="lg:sticky lg:top-8">
               <div className="rounded-[28px] border border-zinc-200/15 bg-zinc-900/25 p-6 backdrop-blur">
-                <div className="flex items-center gap-5">
+                <div className="flex flex-wrap items-center gap-5">
                   <img
                     src={portraitUrl}
                     alt="Charlotte Portrait"
-                    className="h-24 w-24 rounded-2xl object-cover ring-1 ring-zinc-200/10"
+                    className="h-auto w-[clamp(180px,60vw,260px)] rounded-2xl object-cover ring-1 ring-zinc-200/10 sm:w-[clamp(200px,38vw,360px)]"
                   />
                   <div>
                     <div className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
@@ -191,7 +191,7 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
                   </p>
                 </div>
               </div>
-            </aside>
+            </div>
 
             <div className="max-w-3xl space-y-9 text-lg leading-relaxed text-zinc-100 lg:col-start-1">
               <p className="text-zinc-50">
