@@ -1,9 +1,113 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import logoMarkUrl from "../assets/img/logo-mark.png";
 import portraitUrl from "../assets/img/portrait-charlotte.jpg";
 
 export default function HumanCopySharpLanding() {
   const [formState, setFormState] = useState("idle");
+  const [consent, setConsent] = useState(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+
+  const hasConsent = useMemo(() => consent !== null, [consent]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("hc_consent");
+    if (!stored) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(stored);
+      if (typeof parsed?.analytics === "boolean") {
+        setConsent(parsed);
+        setAnalyticsEnabled(parsed.analytics);
+      }
+    } catch {
+      // ignore invalid storage
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!consent?.analytics) {
+      return;
+    }
+
+    if (window.gtag) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://www.googletagmanager.com/gtag/js?id=G-2DBL2MMR17";
+    script.async = true;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    window.gtag = gtag;
+    window.gtag("js", new Date());
+    window.gtag("config", "G-2DBL2MMR17");
+  }, [consent]);
+
+  const updateConsent = (nextConsent) => {
+    setConsent(nextConsent);
+    setAnalyticsEnabled(nextConsent.analytics);
+    localStorage.setItem("hc_consent", JSON.stringify(nextConsent));
+  };
+
+  const impressumBlocks = [
+    "Anbieter / Anschrift\n" +
+      "Human Copy\n" +
+      "Charlotte Grude\n" +
+      "Seestraße 118\n" +
+      "13353 Berlin\n" +
+      "Germany",
+    "Kontakt\n" + "Kontakt:\n" + "E-Mail: hello@human-copy.com",
+    "Umsatzsteuer\n" +
+      "Umsatzsteuer:\n" +
+      "Gemäß § 19 UStG wird keine Umsatzsteuer erhoben (Kleinunternehmerregelung).",
+    "Verantwortlichkeit nach MStV\n" +
+      "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:\n" +
+      "Human Copy",
+    "Haftung für Inhalte\n" +
+      "Haftung für Inhalte\n" +
+      "Als Diensteanbieterin bin ich gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.\n" +
+      "Nach §§ 8 bis 10 TMG bin ich jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+    "Haftung für Links\n" +
+      "Haftung für Links\n" +
+      "Diese Website enthält ggf. Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe.\n" +
+      "Für diese fremden Inhalte wird keine Gewähr übernommen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.",
+    "Urheberrecht\n" +
+      "Urheberrecht\n" +
+      "Die durch die Seitenbetreiberin erstellten Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht.\n" +
+      "Die Vervielfältigung, Bearbeitung oder Verwertung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung.",
+  ];
+
+  const datenschutzBlocks = [
+    "Verantwortliche Stelle\n" + "Verantwortliche: human-copy",
+    "Hosting über GitHub Pages\n" +
+      "Diese Website wird über GitHub Pages (GitHub, Inc.) bereitgestellt. Beim Aufruf werden durch GitHub serverseitige Logfiles (z. B. IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, User-Agent) verarbeitet, um die Website bereitzustellen und zu sichern.",
+    "Kontaktaufnahme\n" +
+      "Wenn du mich per E-Mail oder Kontaktformular kontaktierst, werden die von dir übermittelten Daten (z. B. Name, E-Mail-Adresse, Inhalte der Nachricht) zur Bearbeitung deiner Anfrage verarbeitet.",
+    "Für die Formularübermittlung nutzen wir Formspree als Auftragsverarbeiter. Verarbeitet werden insbesondere Name, E-Mail-Adresse, Inhalte der Nachricht sowie ggf. weitere von dir angegebene Felder. Zweck ist die Bearbeitung deiner Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Kommunikation). Die Daten werden gelöscht, sobald die Kommunikation abgeschlossen ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
+    "Cookies & Einwilligung\n" +
+      "Für Statistikzwecke werden Cookies oder ähnliche Technologien nur nach deiner Einwilligung gesetzt oder ausgelesen. Notwendige Funktionen bleiben davon unberührt.",
+    "Google Analytics (nur nach Einwilligung)\n" +
+      "Wir verwenden Google Analytics 4, um die Nutzung der Website zu messen und zu optimieren. Die Verarbeitung erfolgt erst, nachdem du über das Consent-Banner zugestimmt hast.\n" +
+      "\n" +
+      "Du kannst deine Einwilligung jederzeit über den Link Cookie-Einstellungen widerrufen oder ändern.\n" +
+      "\n" +
+      "GA4 Measurement ID: G-2DBL2MMR17",
+    "Empfänger & Drittlandtransfer\n" +
+      "Bei Nutzung von Dienstleistern (z. B. GitHub, Google, Formspree) können Daten in die USA übermittelt werden. Soweit erforderlich, erfolgt die Übermittlung auf Basis von Standardvertragsklauseln der EU-Kommission bzw. geeigneten Garantien.",
+    "Speicherdauer\n" +
+      "Kontaktdaten werden nur so lange gespeichert, wie es zur Bearbeitung der Anfrage erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.",
+    "Betroffenenrechte\n" +
+      "Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch sowie Datenübertragbarkeit. Eine Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen.",
+    "Beschwerderecht\n" +
+      "Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung deiner personenbezogenen Daten zu beschweren.",
+  ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +154,7 @@ export default function HumanCopySharpLanding() {
             <img
               src={logoMarkUrl}
               alt="Human Copy Logo"
-              className="h-6 w-auto opacity-90"
+              className="h-5 w-auto opacity-90"
             />
             <span className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200">
               human-copy
@@ -171,6 +275,16 @@ export default function HumanCopySharpLanding() {
                 </label>
 
                 <label className="grid gap-2 text-sm text-zinc-300">
+                  Worum geht's? (optional)
+                  <input
+                    type="text"
+                    name="subject"
+                    className="rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-200/30 focus:outline-none"
+                    placeholder="Kurzbeschreibung"
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm text-zinc-300">
                   Text / Kontext
                   <textarea
                     name="message"
@@ -212,33 +326,33 @@ export default function HumanCopySharpLanding() {
                 Wie es abläuft
               </h2>
 
-            <div className="mt-8 grid gap-8 sm:grid-cols-3">
-              <div className="space-y-3">
-                <div className="text-3xl font-semibold text-zinc-50">1</div>
-                <p className="text-base text-zinc-100">
-                  Du schickst mir Text oder Link. <br />
-                  KI oder eigener Entwurf. <br />
-                  Landingpage, About, Angebotsseite.
-                </p>
-              </div>
-              <div className="space-y-3">
-                <div className="text-3xl font-semibold text-zinc-50">2</div>
-                <p className="text-base text-zinc-100">
-                  Ich lese. Ich entscheide.
-                  <br />
-                  Wo du dich drückst. Wo du „klingst“. Wo du wirkst.
-                </p>
-              </div>
-              <div className="space-y-3">
-                <div className="text-3xl font-semibold text-zinc-50">3</div>
-                <p className="text-base text-zinc-100">
-                  Du bekommst mein Urteil.
-                  <br />
-                  Kurz. Direkt. Mit nächstem Schritt.
-                </p>
+              <div className="mt-8 grid gap-8 sm:grid-cols-3">
+                <div className="space-y-3">
+                  <div className="text-3xl font-semibold text-zinc-50">1</div>
+                  <p className="text-base text-zinc-100">
+                    Du schickst mir Text oder Link. <br />
+                    KI oder eigener Entwurf. <br />
+                    Landingpage, About, Angebotsseite.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <div className="text-3xl font-semibold text-zinc-50">2</div>
+                  <p className="text-base text-zinc-100">
+                    Ich lese. Ich entscheide.
+                    <br />
+                    Wo du dich drückst. Wo du „klingst“. Wo du wirkst.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <div className="text-3xl font-semibold text-zinc-50">3</div>
+                  <p className="text-base text-zinc-100">
+                    Du bekommst mein Urteil.
+                    <br />
+                    Kurz. Direkt. Mit nächstem Schritt.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
           </section>
 
           {/* Direkt darunter (statt deiner jetzigen Einleitung) */}
@@ -397,6 +511,39 @@ export default function HumanCopySharpLanding() {
           </div>
         </section>
 
+        <section id="impressum" className="mt-20">
+          <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 text-sm text-zinc-100 backdrop-blur sm:px-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Impressum
+            </h2>
+
+            <div className="mt-6 space-y-6 leading-relaxed text-zinc-200">
+              {impressumBlocks.map((block) => (
+                <p key={block} className="whitespace-pre-line">
+                  {block}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="datenschutz" className="mt-20">
+          <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 text-sm text-zinc-100 backdrop-blur sm:px-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Datenschutz
+            </h2>
+
+            <div className="mt-6 space-y-6 leading-relaxed text-zinc-200">
+              {datenschutzBlocks.map((block) => (
+                <p key={block} className="whitespace-pre-line">
+                  {block}
+                </p>
+              ))}
+              <p className="whitespace-pre-line">Stand: 09. Januar 2026</p>
+            </div>
+          </div>
+        </section>
+
         {/* FOOTER (wie jetzt) */}
         <footer className="mt-16 pb-10">
           <div className="flex flex-col gap-4 text-center text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:text-left">
@@ -405,17 +552,21 @@ export default function HumanCopySharpLanding() {
                 Zurück nach oben
               </a>
               <span aria-hidden="true">·</span>
-              <a href="/impressum.html" className="hover:text-zinc-50">
+              <a href="#impressum" className="hover:text-zinc-50">
                 Impressum
               </a>
               <span aria-hidden="true">·</span>
-              <a href="/datenschutz.html" className="hover:text-zinc-50">
+              <a href="#datenschutz" className="hover:text-zinc-50">
                 Datenschutz
               </a>
               <span aria-hidden="true">·</span>
-              <a href="#" className="hover:text-zinc-50">
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(true)}
+                className="hover:text-zinc-50"
+              >
                 Cookie-Einstellungen
-              </a>
+              </button>
               <span aria-hidden="true">·</span>
               <a
                 href="#top"
@@ -434,6 +585,85 @@ export default function HumanCopySharpLanding() {
           </div>
         </footer>
       </main>
+
+      {!hasConsent && (
+        <div className="fixed inset-x-4 bottom-6 z-50 rounded-[24px] border border-zinc-200/10 bg-zinc-900/95 p-6 text-sm text-zinc-200 shadow-xl backdrop-blur sm:inset-x-auto sm:right-6 sm:max-w-md">
+          <p className="text-zinc-100">
+            Wir verwenden Cookies für Statistikzwecke nur mit deiner
+            Einwilligung.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => updateConsent({ analytics: true })}
+              className="rounded-full bg-zinc-50 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-white"
+            >
+              Alle akzeptieren
+            </button>
+            <button
+              type="button"
+              onClick={() => updateConsent({ analytics: false })}
+              className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+            >
+              Nur notwendige
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+            >
+              Einstellungen
+            </button>
+          </div>
+        </div>
+      )}
+
+      {isSettingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+          <div
+            className="absolute inset-0 bg-black/70"
+            onClick={() => setIsSettingsOpen(false)}
+          />
+          <div className="relative w-full max-w-lg rounded-[28px] border border-zinc-200/10 bg-zinc-900/95 p-6 text-sm text-zinc-200 backdrop-blur">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Cookie-Einstellungen
+            </h3>
+            <p className="mt-4 text-zinc-100">
+              Entscheide, ob wir Analytics-Cookies setzen dürfen.
+            </p>
+
+            <label className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3">
+              <span className="text-sm text-zinc-100">Analytics</span>
+              <input
+                type="checkbox"
+                checked={analyticsEnabled}
+                onChange={(event) => setAnalyticsEnabled(event.target.checked)}
+                className="h-4 w-4 accent-zinc-50"
+              />
+            </label>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  updateConsent({ analytics: analyticsEnabled });
+                  setIsSettingsOpen(false);
+                }}
+                className="rounded-full bg-zinc-50 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-white"
+              >
+                Speichern
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(false)}
+                className="rounded-full border border-zinc-200/20 px-4 py-2 text-xs font-semibold text-zinc-200 hover:border-zinc-200/40"
+              >
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
