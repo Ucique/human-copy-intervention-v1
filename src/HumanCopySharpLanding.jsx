@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
+import logoMarkUrl from "../assets/img/logo-mark.png";
+import portraitUrl from "../assets/img/portrait-charlotte.jpg";
 
 export default function HumanCopySharpLanding() {
+  const [formState, setFormState] = useState("idle");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (formState === "loading") {
+      return;
+    }
+
+    setFormState("loading");
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xeeegdre", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        event.currentTarget.reset();
+        setFormState("success");
+        return;
+      }
+    } catch {
+      // fall through to set error state
+    }
+
+    setFormState("error");
+  };
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 selection:bg-zinc-200 selection:text-zinc-950">
+    <div
+      id="top"
+      className="min-h-screen bg-zinc-950 text-zinc-50 selection:bg-zinc-200 selection:text-zinc-950"
+    >
       {/* Top hairline */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-zinc-700/60 to-transparent" />
 
@@ -10,6 +47,11 @@ export default function HumanCopySharpLanding() {
         {/* NAV / HEADER */}
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-3">
+            <img
+              src={logoMarkUrl}
+              alt="Human Copy Logo"
+              className="h-5 w-auto opacity-90"
+            />
             <div className="h-2.5 w-2.5 rounded-full bg-zinc-50" />
             <span className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200">
               human-copy
@@ -132,12 +174,16 @@ export default function HumanCopySharpLanding() {
           <aside className="lg:sticky lg:top-8">
             <div className="rounded-[28px] border border-zinc-200/15 bg-zinc-900/25 p-6 backdrop-blur">
               <div className="flex items-center gap-4">
-                <div className="h-14 w-14 rounded-2xl bg-zinc-800 ring-1 ring-zinc-200/10" />
+                <img
+                  src={portraitUrl}
+                  alt="Charlotte Portrait"
+                  className="h-14 w-14 rounded-2xl object-cover ring-1 ring-zinc-200/10"
+                />
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
                     Portrait von Charlotte
                   </div>
-                  <div className="text-sm text-zinc-400">(Platzhalter)</div>
+                  <div className="text-sm text-zinc-400">Human Copy</div>
                 </div>
               </div>
 
@@ -155,6 +201,77 @@ export default function HumanCopySharpLanding() {
               </div>
             </div>
           </aside>
+        </section>
+
+        {/* Formular */}
+        <section id="einreichen" className="mt-20">
+          <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 backdrop-blur sm:px-10">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+              Text einreichen / Kontakt
+            </h2>
+
+            <p className="mt-6 text-lg text-zinc-100">
+              Schick mir deinen Text oder Link. Ich melde mich mit der nächsten
+              Entscheidung.
+            </p>
+
+            <form className="mt-8 grid gap-6" onSubmit={handleSubmit}>
+              <input type="hidden" name="page_variant" value="intervention-v1" />
+
+              <label className="grid gap-2 text-sm text-zinc-300">
+                Name (optional)
+                <input
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  className="rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-200/30 focus:outline-none"
+                  placeholder="Dein Name"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm text-zinc-300">
+                E-Mail
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  className="rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-200/30 focus:outline-none"
+                  placeholder="name@email.com"
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm text-zinc-300">
+                Text / Link / Nachricht
+                <textarea
+                  name="message"
+                  required
+                  rows={5}
+                  className="rounded-2xl border border-zinc-200/10 bg-zinc-950/60 px-4 py-3 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-zinc-200/30 focus:outline-none"
+                  placeholder="Worum geht es? Link, Text oder Kontext."
+                />
+              </label>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center rounded-full bg-zinc-50 px-6 py-3 text-sm font-semibold text-zinc-950 hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
+                  disabled={formState === "loading"}
+                >
+                  {formState === "loading" ? "Sende ..." : "Text einreichen"}
+                </button>
+
+                {formState === "success" && (
+                  <p className="text-sm text-zinc-200">Danke. Ich melde mich.</p>
+                )}
+                {formState === "error" && (
+                  <p className="text-sm text-zinc-400">
+                    Fehler beim Senden. Bitte später nochmal.
+                  </p>
+                )}
+              </div>
+            </form>
+          </div>
         </section>
 
         {/* Abschnitt „Wie es abläuft“ */}
@@ -257,11 +374,30 @@ export default function HumanCopySharpLanding() {
         {/* FOOTER (wie jetzt) */}
         <footer className="mt-16 pb-10">
           <div className="flex flex-col items-center gap-3 text-center text-xs text-zinc-400 sm:flex-row sm:justify-between sm:text-left">
-            <div className="text-zinc-300">
-              Zurück nach oben · Logo · Impressum · Datenschutz · Cookie-Einstellungen
+            <div className="flex flex-wrap items-center justify-center gap-2 text-zinc-300 sm:justify-start">
+              <img
+                src={logoMarkUrl}
+                alt="Human Copy Logo"
+                className="h-6 w-auto opacity-80"
+              />
+              <a href="#top" className="hover:text-zinc-50">
+                Zurück nach oben
+              </a>
+              <span aria-hidden="true">·</span>
+              <a href="/impressum.html" className="hover:text-zinc-50">
+                Impressum
+              </a>
+              <span aria-hidden="true">·</span>
+              <a href="/datenschutz.html" className="hover:text-zinc-50">
+                Datenschutz
+              </a>
+              <span aria-hidden="true">·</span>
+              <a href="#" className="hover:text-zinc-50">
+                Cookie-Einstellungen
+              </a>
             </div>
             <a
-              href="#"
+              href="#top"
               className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-200 hover:text-zinc-50"
             >
               ↑
