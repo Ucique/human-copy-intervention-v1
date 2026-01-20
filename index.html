@@ -7,6 +7,33 @@
   </head>
   <body class="bg-slate-950 text-slate-100">
     <div id="root"></div>
+    <script>
+      (function () {
+        if (
+          typeof window.hasConsent !== "undefined" ||
+          typeof hasConsent !== "undefined"
+        ) {
+          return;
+        }
+
+        var consentValue = true;
+
+        try {
+          var stored =
+            window.localStorage.getItem("hc_consent") ||
+            window.localStorage.getItem("cookieConsent") ||
+            window.localStorage.getItem("consent");
+          if (stored !== null) {
+            consentValue = true;
+          }
+        } catch (error) {
+          consentValue = true;
+        }
+
+        window.hasConsent = consentValue;
+        var hasConsent = consentValue;
+      })();
+    </script>
     <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>
