@@ -101,6 +101,49 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
         </header>
 
         <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+          <section className="space-y-10 lg:col-start-2">
+            <div className="space-y-6 text-lg leading-relaxed text-zinc-100">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+                Warum KI-Texte scheitern
+              </h2>
+              <p>Die meisten KI-Texte sind nicht schlecht. Sie sind belanglos.</p>
+              <p>Wenn alles erklärt wird, bleibt nichts hängen.</p>
+              <p>Ich optimiere keine Texte. Ich greife ein.</p>
+            </div>
+
+            <div className="rounded-[28px] border border-zinc-200/15 bg-zinc-900/25 p-6 backdrop-blur">
+              <div className="flex flex-wrap items-center gap-5">
+                <img
+                  src={portraitUrl}
+                  alt="Charlotte Portrait"
+                  className="h-auto w-[clamp(200px,70vw,240px)] rounded-2xl object-cover ring-1 ring-zinc-200/10 sm:w-[clamp(220px,45vw,300px)] lg:w-[clamp(280px,32vw,360px)]"
+                />
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
+                    Hey, ich bin Charlotte.
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-zinc-100">
+                <p>
+                  Ich arbeite nicht mit Menschen,
+                  <br />
+                  die Integrität als Accessoire tragen.
+                </p>
+                <p className="font-semibold text-zinc-50">
+                  Ich poliere keine Worte.
+                  <br />
+                  Ich reiße ihnen die Maske ab.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <div className="text-lg font-medium leading-relaxed text-zinc-100 lg:col-span-2">
+            Wenn du bis hier gelesen hast, weißt du schon, ob das für dich ist.
+          </div>
+
           <section id="einreichen" className="lg:col-start-1">
             <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 backdrop-blur sm:px-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
@@ -301,56 +344,22 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
             </div>
           </section>
 
-          <section className="space-y-10 lg:col-start-2">
-            <div className="space-y-6 text-lg leading-relaxed text-zinc-100">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
-                Warum KI-Texte scheitern
-              </h2>
-              <p>Die meisten KI-Texte sind nicht schlecht. Sie sind belanglos.</p>
-              <p>Wenn alles erklärt wird, bleibt nichts hängen.</p>
-              <p>Ich optimiere keine Texte. Ich greife ein.</p>
-            </div>
-
-            <div className="rounded-[28px] border border-zinc-200/15 bg-zinc-900/25 p-6 backdrop-blur">
-              <div className="flex flex-wrap items-center gap-5">
-                <img
-                  src={portraitUrl}
-                  alt="Charlotte Portrait"
-                  className="h-auto w-[clamp(200px,70vw,240px)] rounded-2xl object-cover ring-1 ring-zinc-200/10 sm:w-[clamp(220px,45vw,300px)] lg:w-[clamp(280px,32vw,360px)]"
-                />
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
-                    Portrait von Charlotte
-                  </div>
-                  <div className="text-sm text-zinc-400">Human Copy</div>
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-4 text-base leading-relaxed text-zinc-100">
-                <p>
-                  Ich arbeite nicht mit Menschen,
-                  <br />
-                  die Integrität als Accessoire tragen.
-                </p>
-                <p className="font-semibold text-zinc-50">
-                  Ich poliere keine Worte.
-                  <br />
-                  Ich reiße ihnen die Maske ab.
-                </p>
-              </div>
-            </div>
-          </section>
-
           <section className="lg:col-start-2">
             <div className="rounded-[28px] border border-zinc-200/10 bg-zinc-900/20 px-7 py-10 text-lg leading-relaxed text-zinc-100 backdrop-blur sm:px-10">
               <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">
-                Beobachtungen
+                Was fast immer passiert
               </h2>
               <div className="mt-6 space-y-4">
                 <p>
-                  Der letzte Text war korrekt. Danach wurde er zu Ende gelesen.
+                  Der letzte Text war korrekt.
+                  <br />
+                  Danach wurde er zu Ende gelesen.
                 </p>
-                <p>Oft reicht ein gestrichener Absatz, damit ein Text atmet.</p>
+                <p>
+                  Manchmal reicht ein gestrichener Absatz,
+                  <br />
+                  damit ein Text wieder atmet.
+                </p>
               </div>
             </div>
           </section>
@@ -361,11 +370,11 @@ export default function HumanCopySharpLanding({ onOpenSettings }) {
           <div className="flex flex-col gap-4 text-center text-xs text-zinc-400 sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <div className="flex flex-col items-center gap-3 text-zinc-300 sm:items-start">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                <a href="./impressum/" className="hover:text-zinc-50">
+                <a href="impressum/" className="hover:text-zinc-50">
                   Impressum
                 </a>
                 <span aria-hidden="true">·</span>
-                <a href="./datenschutz/" className="hover:text-zinc-50">
+                <a href="datenschutz/" className="hover:text-zinc-50">
                   Datenschutz
                 </a>
               </div>
