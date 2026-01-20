@@ -33,6 +33,32 @@
         window.hasConsent = consentValue;
         var hasConsent = consentValue;
       })();
+      (function () {
+        try {
+          if (
+            typeof window.isSettingsOpen !== "undefined" ||
+            typeof isSettingsOpen !== "undefined"
+          ) {
+            return;
+          }
+        } catch (error) {
+          // Continue to define a safe default below.
+        }
+
+        var settingsOpen = false;
+
+        try {
+          var storedSettings = window.localStorage.getItem("hc_settings_open");
+          if (storedSettings !== null) {
+            settingsOpen = storedSettings === "true";
+          }
+        } catch (error) {
+          settingsOpen = false;
+        }
+
+        window.isSettingsOpen = settingsOpen;
+        var isSettingsOpen = settingsOpen;
+      })();
     </script>
     <script type="module" src="./src/main.jsx"></script>
   </body>
